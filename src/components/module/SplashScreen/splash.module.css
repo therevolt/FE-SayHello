@@ -1,0 +1,10 @@
+.splash-screen {
+  background: #2675ec;
+  height: 100vh;
+  text-align-last: center;
+}
+
+.splash-screen img {
+  margin-top: 35vh;
+  transition: 5000ms linear all;
+}
