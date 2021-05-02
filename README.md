@@ -15,7 +15,7 @@
 Frontend SayHello Apps
 
 ## 🔖Build With
-- NextJS
+- ReactJS
 - Socket.io
 - Bootstrap
 
