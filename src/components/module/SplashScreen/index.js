@@ -13,7 +13,7 @@ const SplashScreen = () => {
       } else {
         history.push("/home");
       }
-    }, 4000);
+    }, 2000);
     // eslint-disable-next-line
   }, []);
 
