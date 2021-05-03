@@ -4,7 +4,6 @@ import { useMediaQuery } from "react-responsive";
 import Profile from "../../base/Profile";
 import Home from "../../base/Home";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
 
 const customStyles = {
   content: {
@@ -22,7 +21,6 @@ const SidePanel = ({ fireEvent }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const responsivePage = useMediaQuery({ query: "(max-width: 800px)" });
   const dispatch = useDispatch();
-  const history = useHistory();
 
   function closeModal() {
     setIsOpen(false);
@@ -91,7 +89,7 @@ const SidePanel = ({ fireEvent }) => {
           onClick={() => {
             localStorage.removeItem("token");
             dispatch({ type: "LOGIN_USER", payload: "" });
-            history.push("/auth/login");
+            window.location.replace("/auth/login");
           }}
         >
           <div className="icon me-3">
