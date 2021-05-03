@@ -19,15 +19,13 @@ const AuthRegister = () => {
   const handleChange = (e) => {
     const { id, value } = e.target;
     setData({ ...data, [id]: value });
-    if (data.password.length >= 8) {
+    if (data.password.length >= 6) {
       setError({
-        name: false,
         email: false,
         password: false,
       });
-    } else {
+    } else if (id === "password" && data.password.length < 6) {
       setError({
-        name: false,
         email: false,
         password: true,
       });
@@ -114,7 +112,7 @@ const AuthRegister = () => {
             </svg>
           </div>
         </div>
-        {error.password && <div className="error-text">Be at least 8 characters long</div>}
+        {error.password && <div className="error-text">Be at least 6 characters long</div>}
       </div>
       <div className="btn-main mx-5 px-3 py-4">
         <button onClick={handleSubmit}>Register</button>

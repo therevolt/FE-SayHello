@@ -21,12 +21,12 @@ const AuthLogin = () => {
   const handleChange = (e) => {
     const { id, value } = e.target;
     setData({ ...data, [id]: value });
-    if (data.password.length >= 8) {
+    if (data.password.length >= 6) {
       setError({
         email: false,
         password: false,
       });
-    } else if (id === "password" && data.password.length < 8) {
+    } else if (id === "password" && data.password.length < 6) {
       setError({
         email: false,
         password: true,
@@ -106,7 +106,7 @@ const AuthLogin = () => {
             </svg>
           </div>
         </div>
-        {error.password && <div className="error-text">Be at least 8 characters long</div>}
+        {error.password && <div className="error-text">Be at least 6 characters long</div>}
       </div>
       <Link to="/auth/forgot">
         <div className="forgot-access my-2 mb-3">
