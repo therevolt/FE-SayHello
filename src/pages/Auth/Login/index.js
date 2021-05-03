@@ -6,27 +6,54 @@ import Swal from "sweetalert2";
 import HelmetTitle from "../../../components/base/Helmet";
 
 const AuthLogin = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
   const history = useHistory();
   const dispatch = useDispatch();
+  const [error, setError] = useState({
+    name: false,
+    email: false,
+    password: false,
+  });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setData({ ...data, [id]: value });
+    if (data.password.length >= 8) {
+      setError({
+        email: false,
+        password: false,
+      });
+    } else if (id === "password" && data.password.length < 8) {
+      setError({
+        email: false,
+        password: true,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
-    axios
-      .post(`${process.env.REACT_APP_URL_API}/users/login`, data)
-      .then((result) => {
-        dispatch({ type: "LOGIN_USER", payload: result.data.data });
-        localStorage.setItem("token", result.data.data.token);
-        Swal.fire("Success", "Login Success", "success");
-        history.push("/home");
-      })
-      .catch((err) => {
-        Swal.fire("Error", err.response.data.message, "error");
-      });
+    if (data.email && data.password) {
+      if (data.email.match(/@\w*.(com|co\.id|org)/g)) {
+        axios
+          .post(`${process.env.REACT_APP_URL_API}/users/login`, data)
+          .then((result) => {
+            dispatch({ type: "LOGIN_USER", payload: result.data.data });
+            localStorage.setItem("token", result.data.data.token);
+            Swal.fire("Success", "Login Success", "success");
+            history.push("/home");
+          })
+          .catch((err) => {
+            Swal.fire("Error", err.response.data.message, "error");
+          });
+      } else {
+        setError({ ...error, email: true });
+      }
+    } else {
+      Swal.fire("Error", "Data cannot be null", "error");
+    }
   };
 
   return (
@@ -41,18 +68,25 @@ const AuthLogin = () => {
       <div className="wrapper-input d-flex flex-column mx-5 px-3 py-2 mt-4">
         <div className="title-input">Email</div>
         <div className="input">
-          <input type="email" name="email" id="email" onChange={handleChange} />
+          <input
+            className={error.email ? "error" : "email"}
+            type="email"
+            name="email"
+            id="email"
+            onChange={handleChange}
+          />
         </div>
+        {error.email && <div className="error-text">Invalid Email</div>}
       </div>
       <div className="wrapper-input d-flex flex-column mx-5 px-3 py-2">
         <div className="title-input">Password</div>
         <div className="input d-flex">
           <input
+            className={error.password ? "error" : "password"}
             type="password"
             name="password"
             id="password"
             onChange={handleChange}
-            onKeyPress={(value) => value.code === "Enter" && handleSubmit()}
           />
           <div className="icon-eye">
             <svg
@@ -70,6 +104,7 @@ const AuthLogin = () => {
             </svg>
           </div>
         </div>
+        {error.password && <div className="error-text">Be at least 8 characters long</div>}
       </div>
       <Link to="/auth/forgot">
         <div className="forgot-access my-2 mb-3">

@@ -10,10 +10,28 @@ const AuthRegister = () => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState({
+    name: false,
+    email: false,
+    password: false,
+  });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setData({ ...data, [id]: value });
+    if (data.password.length >= 8) {
+      setError({
+        name: false,
+        email: false,
+        password: false,
+      });
+    } else {
+      setError({
+        name: false,
+        email: false,
+        password: true,
+      });
+    }
   };
 
   const handleSubmit = () => {
@@ -28,7 +46,7 @@ const AuthRegister = () => {
             Swal.fire("Error", err.response.data.message, "error");
           });
       } else {
-        Swal.fire("Error", "Email Not Valid", "error");
+        setError({ ...error, email: true });
       }
     } else {
       Swal.fire("Error", "Data cannot be null", "error");
@@ -58,13 +76,26 @@ const AuthRegister = () => {
       <div className="wrapper-input d-flex flex-column mx-5 px-3 py-2">
         <div className="title-input">Email</div>
         <div className="input">
-          <input type="email" name="email" id="email" onChange={handleChange} />
+          <input
+            className={error.email ? "error" : "email"}
+            type="email"
+            name="email"
+            id="email"
+            onChange={handleChange}
+          />
         </div>
+        {error.email && <div className="error-text">Invalid Email</div>}
       </div>
       <div className="wrapper-input d-flex flex-column mx-5 px-3 py-2">
         <div className="title-input">Password</div>
         <div className="input d-flex">
-          <input type="password" name="password" id="password" onChange={handleChange} />
+          <input
+            className={error.password ? "error" : "password"}
+            type="password"
+            name="password"
+            id="password"
+            onChange={handleChange}
+          />
           <div className="icon-eye">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -81,6 +112,7 @@ const AuthRegister = () => {
             </svg>
           </div>
         </div>
+        {error.password && <div className="error-text">Be at least 8 characters long</div>}
       </div>
       <div className="btn-main mx-5 px-3 py-4">
         <button onClick={handleSubmit}>Register</button>
