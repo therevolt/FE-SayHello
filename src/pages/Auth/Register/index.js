@@ -37,14 +37,16 @@ const AuthRegister = () => {
   const handleSubmit = () => {
     if (data.name && data.email && data.password) {
       if (data.email.match(/@\w*.(com|co\.id|org)/g)) {
-        axios
-          .post(`${process.env.REACT_APP_URL_API}/users`, data)
-          .then((result) => {
-            Swal.fire("Success", result.data.message, "success");
-          })
-          .catch((err) => {
-            Swal.fire("Error", err.response.data.message, "error");
-          });
+        if (!error.password) {
+          axios
+            .post(`${process.env.REACT_APP_URL_API}/users`, data)
+            .then((result) => {
+              Swal.fire("Success", result.data.message, "success");
+            })
+            .catch((err) => {
+              Swal.fire("Error", err.response.data.message, "error");
+            });
+        }
       } else {
         setError({ ...error, email: true });
       }

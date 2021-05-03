@@ -37,17 +37,19 @@ const AuthLogin = () => {
   const handleSubmit = (e) => {
     if (data.email && data.password) {
       if (data.email.match(/@\w*.(com|co\.id|org)/g)) {
-        axios
-          .post(`${process.env.REACT_APP_URL_API}/users/login`, data)
-          .then((result) => {
-            dispatch({ type: "LOGIN_USER", payload: result.data.data });
-            localStorage.setItem("token", result.data.data.token);
-            Swal.fire("Success", "Login Success", "success");
-            history.push("/home");
-          })
-          .catch((err) => {
-            Swal.fire("Error", err.response.data.message, "error");
-          });
+        if (!error.password) {
+          axios
+            .post(`${process.env.REACT_APP_URL_API}/users/login`, data)
+            .then((result) => {
+              dispatch({ type: "LOGIN_USER", payload: result.data.data });
+              localStorage.setItem("token", result.data.data.token);
+              Swal.fire("Success", "Login Success", "success");
+              history.push("/home");
+            })
+            .catch((err) => {
+              Swal.fire("Error", err.response.data.message, "error");
+            });
+        }
       } else {
         setError({ ...error, email: true });
       }
