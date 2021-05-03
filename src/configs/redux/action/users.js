@@ -5,7 +5,7 @@ export const getUser = () => {
   return (dispatch) => {
     dispatch({ type: "LOAD_USER" });
     axiosApiInstance
-      .get(`${process.env.REACT_APP_URL_API}/v1/users/profile`)
+      .get(`${process.env.REACT_APP_URL_API}/users`)
       .then((res) => {
         if (result.data.status) {
           dispatch({ type: "LOGIN_USER", payload: res.data.data });

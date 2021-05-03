@@ -3,6 +3,8 @@ import Modal from "react-modal";
 import { useMediaQuery } from "react-responsive";
 import Profile from "../../base/Profile";
 import Home from "../../base/Home";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 
 const customStyles = {
   content: {
@@ -19,6 +21,8 @@ const SidePanel = ({ fireEvent }) => {
   const [selectedMenu, setSelectedMenu] = useState("home");
   const [modalIsOpen, setIsOpen] = useState(false);
   const responsivePage = useMediaQuery({ query: "(max-width: 800px)" });
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   function closeModal() {
     setIsOpen(false);
@@ -81,6 +85,19 @@ const SidePanel = ({ fireEvent }) => {
             <img src="/assets/images/FAQ.svg" alt="" width="24" height="24" />
           </div>
           <span>FAQ</span>
+        </div>
+        <div
+          className="menu d-flex mb-3"
+          onClick={() => {
+            localStorage.removeItem("token");
+            dispatch({ type: "LOGIN_USER", payload: "" });
+            history.push("/auth/login");
+          }}
+        >
+          <div className="icon me-3">
+            <img src="/assets/images/exit.svg" alt="" width="24" height="24" />
+          </div>
+          <span>Logout</span>
         </div>
       </Modal>
     </div>

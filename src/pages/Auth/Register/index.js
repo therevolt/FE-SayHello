@@ -5,7 +5,11 @@ import axios from "axios";
 import HelmetTitle from "../../../components/base/Helmet";
 
 const AuthRegister = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
