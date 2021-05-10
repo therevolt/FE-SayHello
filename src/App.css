@@ -21,6 +21,10 @@ li.list-bottom {
   height: 0.01px !important;
 }
 
+button:disabled {
+  background: #e5e5e5 !important;
+}
+
 .side-panel::-webkit-scrollbar,
 .body-chat::-webkit-scrollbar,
 .side-panel-mobile::-webkit-scrollbar {
@@ -455,8 +459,65 @@ input#password {
   color: #232323 !important;
 }
 
+.status-send {
+  background: transparent !important;
+  color: #232323 !important;
+}
+
 .error-text {
   color: red;
+}
+
+.spinner-chat-list {
+  width: 150px;
+  height: 150px;
+  margin: 25% 25%;
+}
+
+.spinner-avatar {
+  width: 82px;
+  height: 82px;
+  /* margin: 25% 25%; */
+}
+
+.in-chat {
+  background: transparent !important;
+  margin: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.online-dot .tooltiptext {
+  visibility: hidden;
+  width: 60px;
+  background-color: #919191af;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -30px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.online-dot .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #919191af transparent transparent transparent;
+}
+
+.online-dot:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 
 @media screen and (max-width: 800px) {

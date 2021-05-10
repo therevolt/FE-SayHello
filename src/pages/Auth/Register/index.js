@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import HelmetTitle from "../../../components/base/Helmet";
+import Spinner from "../../../components/base/Spinner";
 
 const AuthRegister = () => {
   const [data, setData] = useState({
@@ -15,6 +16,7 @@ const AuthRegister = () => {
     email: false,
     password: false,
   });
+  const [load, setLoad] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -33,22 +35,27 @@ const AuthRegister = () => {
   };
 
   const handleSubmit = () => {
+    setLoad(true);
     if (data.name && data.email && data.password) {
-      if (data.email.match(/@\w*.(com|co\.id|org)/g)) {
-        if (!error.password) {
+      if (data.email.match(/@\w*.\w*/g)) {
+        if (!error.password && !error.name && !error.email) {
           axios
             .post(`${process.env.REACT_APP_URL_API}/users`, data)
             .then((result) => {
+              setLoad(false);
               Swal.fire("Success", result.data.message, "success");
             })
             .catch((err) => {
+              setLoad(false);
               Swal.fire("Error", err.response.data.message, "error");
             });
         }
       } else {
+        setLoad(false);
         setError({ ...error, email: true });
       }
     } else {
+      setLoad(false);
       Swal.fire("Error", "Data cannot be null", "error");
     }
   };
@@ -115,7 +122,9 @@ const AuthRegister = () => {
         {error.password && <div className="error-text">Be at least 6 characters long</div>}
       </div>
       <div className="btn-main mx-5 px-3 py-4">
-        <button onClick={handleSubmit}>Register</button>
+        <button onClick={handleSubmit} disabled={load ? true : false}>
+          {load ? <Spinner /> : "Register"}
+        </button>
       </div>
       <div className="divider-area d-flex mx-5 px-1 py-3">
         <hr />

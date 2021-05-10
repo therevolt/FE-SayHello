@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axiosApiInstance from "../../../helper/axiosInstance";
-import Swal from "sweetalert2";
 import Input from "../Input";
 
 const Home = ({ fireEvent }) => {
@@ -21,8 +20,8 @@ const Home = ({ fireEvent }) => {
         setList(result.data.data);
         setDefaultList(result.data.data);
       })
-      .catch((err) => {
-        Swal.fire("Internal Server Error", err.message, "error");
+      .catch(() => {
+        // Do Nothing
       });
   }, [lastMsg]);
 
@@ -251,7 +250,15 @@ const Home = ({ fireEvent }) => {
                   ) : (
                     <>
                       <div className="d-flex">
-                        <img src={item.avatar} alt="" height="62" width="64" />
+                        <div className="position-relative">
+                          {item.socketId && (
+                            <div className="online-dot position-absolute end-0 bottom-0">
+                              <span class="tooltiptext">Online</span>
+                              <img src="/assets/images/rec.svg" alt="dot" width="20" height="20" />
+                            </div>
+                          )}
+                          <img src={item.avatar} alt="" height="62" width="64" />
+                        </div>
                         <div className="detail-card d-flex flex-column mx-2">
                           <div className="name my-1">{item.name}</div>
                           <div className="text-chat">
@@ -260,8 +267,12 @@ const Home = ({ fireEvent }) => {
                         </div>
                       </div>
                       <div className="status-card d-flex flex-column">
-                        <div className="time my-2">{item.lastTime}</div>
-                        {item.countUnread > 0 ? (
+                        <div className="time my-2">
+                          {item.lastMessage === "" ? "" : item.lastTime}
+                        </div>
+                        {item.lastMessage === "" ? (
+                          ""
+                        ) : item.countUnread > 0 ? (
                           <div className="unread">{item.countUnread}</div>
                         ) : (
                           <div className="icon-msg">

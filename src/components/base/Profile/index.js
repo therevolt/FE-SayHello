@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axiosApiInstance from "../../../helper/axiosInstance";
 import Swal from "sweetalert2";
 import PhoneFormat from "../../../helper/phoneFormat";
+import Spinner from "../Spinner";
 
 const Profile = ({ fireEvent }) => {
   const state = useSelector((state) => state.user.user);
@@ -13,6 +14,7 @@ const Profile = ({ fireEvent }) => {
     bio: state.bio,
     name: state.name,
   });
+  const [load, setLoad] = useState(false);
   const avatar = useRef();
   const form = new FormData();
   const dispatch = useDispatch();
@@ -28,11 +30,13 @@ const Profile = ({ fireEvent }) => {
   const handleChange = async (e) => {
     const { id, value } = e.target;
     if (id === "avatar") {
+      setLoad(true);
       let file = e.target.files[0];
       form.append("avatar", file, file.name);
       await axiosApiInstance
         .put(`${process.env.REACT_APP_URL_API}/users`, form)
         .then((result) => {
+          setLoad(false);
           dispatch({
             type: "LOGIN_USER",
             payload: result.data.data,
@@ -40,6 +44,7 @@ const Profile = ({ fireEvent }) => {
           Swal.fire("Success", result.data.message, "success");
         })
         .catch((err) => {
+          setLoad(false);
           Swal.fire("Error", err.response.data.message, "error");
         });
     } else {
@@ -72,7 +77,7 @@ const Profile = ({ fireEvent }) => {
         <div className="icon-menu mt-3 me-4" onClick={() => fireEvent("home")}>
           <img src="/assets/images/back.svg" alt="" />
         </div>
-        <div className="title my-2">@{state.username || "-"}</div>
+        <div className="title my-2">@{data.username || "-"}</div>
       </div>
       <div className="profile-info mx-2">
         <div className="d-flex">
@@ -85,7 +90,11 @@ const Profile = ({ fireEvent }) => {
             onChange={handleChange}
           />
           <div className="profile-picture ms-3" onClick={() => handleAvatar()}>
-            <img src={state.avatar} alt="" width="82" height="82" />
+            {load ? (
+              <Spinner className="spinner-avatar" />
+            ) : (
+              <img src={state.avatar} alt="" width="82" height="82" />
+            )}
           </div>
           <div className="d-flex flex-column my-2 mx-2">
             <div className="name text-black">
@@ -127,11 +136,12 @@ const Profile = ({ fireEvent }) => {
         <div className="account mx-4 my-4">
           <div className="detail-account">
             <div className="text-black">
+              @
               <input
                 type="text"
                 name="username"
                 id="username"
-                value={editMenu.username ? data.username : `@${data.username}`}
+                value={editMenu.username ? data.username : `${data.username || "-"}`}
                 disabled={editMenu.username ? false : true}
                 autoFocus
                 onBlur={handleEditMenu}

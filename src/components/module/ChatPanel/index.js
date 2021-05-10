@@ -52,19 +52,19 @@ const ChatPanel = ({ fireEvent }) => {
 
   const socketSetup = () => {
     const receiver = state ? state.userId : "";
-    const socket = io("http://localhost:1234", {
+    const socket = io(process.env.REACT_APP_SOCKET_URL, {
       query: {
         sender: user.userId || "",
         name: user.name || "",
         receiver: receiver,
       },
+      secure: true,
     });
     setSocketState(socket);
   };
 
   useEffect(() => {
     socketSetup();
-    dispatch({ type: "SET_LAST_MSG", payload: Math.floor(Math.random() * 101) });
     // eslint-disable-next-line
   }, []);
 
@@ -183,12 +183,35 @@ const ChatPanel = ({ fireEvent }) => {
           });
         }
       });
+      if (state) {
+        socketState.on("online", (data) => {
+          axiosApiInstance
+            .get(`${process.env.REACT_APP_URL_API}/users/list`)
+            .then((result) => {
+              dispatch({ type: "SET_LAST_MSG", payload: `${Math.floor(Math.random() * 101)}` });
+              console.log(data);
+              if (state.userId === data.userId) {
+                dispatch({
+                  type: "SET_CHAT",
+                  payload: result.data.data.filter((item) => item.userId === state.userId)[0],
+                });
+              }
+            })
+            .catch(() => {
+              // Do Nothing
+            });
+        });
+      }
     } // eslint-disable-next-line
   }, [socketState]);
 
   const handleClick = async () => {
-    axiosApiInstance.get(`${process.env.REACT_APP_URL_API}/messages/read?user=${state.userId}`);
-    dispatch({ type: "SET_LAST_MSG", payload: `${Math.floor(Math.random() * 101)}` });
+    await axiosApiInstance
+      .get(`${process.env.REACT_APP_URL_API}/messages/read?user=${state.userId}`)
+      .then(() => dispatch({ type: "SET_LAST_MSG", payload: `${Math.floor(Math.random() * 101)}` }))
+      .catch(() =>
+        dispatch({ type: "SET_LAST_MSG", payload: `${Math.floor(Math.random() * 101)}` })
+      );
     await axiosApiInstance.post(`${process.env.REACT_APP_URL_API}/messages`, {
       to: state.userId,
       messageBody: message,
@@ -313,6 +336,13 @@ const ChatPanel = ({ fireEvent }) => {
                         key={i}
                       >
                         <div className="time-msg">{item.time}</div>
+                        <div className="icon-msg in-chat">
+                          {item.isRead ? (
+                            <img src="/assets/images/read.svg" alt="" />
+                          ) : (
+                            <img src="/assets/images/send2.svg" alt="" />
+                          )}
+                        </div>
                         <div className="mx-2">{item.messageBody}</div>
                         <img src={user.avatar} alt="" width="54" height="54" />
                       </li>
@@ -329,6 +359,7 @@ const ChatPanel = ({ fireEvent }) => {
                 onChange={onChangeInput}
                 onKeyPress={(key) => key.code === "Enter" && handleClick()}
                 value={message}
+                autoComplete="off"
               />
               <div className="action-chat d-flex position-absolute end-0 top-0 my-3">
                 <input type="file" name="attach" id="attach" ref={inputRef} hidden />

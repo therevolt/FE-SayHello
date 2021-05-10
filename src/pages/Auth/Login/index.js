@@ -4,16 +4,17 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import Swal from "sweetalert2";
 import HelmetTitle from "../../../components/base/Helmet";
+import Spinner from "../../../components/base/Spinner";
 
 const AuthLogin = () => {
   const [data, setData] = useState({
     email: "",
     password: "",
   });
+  const [load, SetLoad] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
   const [error, setError] = useState({
-    name: false,
     email: false,
     password: false,
   });
@@ -34,19 +35,22 @@ const AuthLogin = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
+    SetLoad(true);
     if (data.email && data.password) {
-      if (data.email.match(/@\w*.(com|co\.id|org)/g)) {
-        if (!error.password) {
+      if (data.email.match(/@\w*.\w*/g)) {
+        if (!error.password && !error.email) {
           axios
             .post(`${process.env.REACT_APP_URL_API}/users/login`, data)
             .then((result) => {
+              SetLoad(false);
               dispatch({ type: "LOGIN_USER", payload: result.data.data });
               localStorage.setItem("token", result.data.data.token);
               Swal.fire("Success", "Login Success", "success");
               history.push("/home");
             })
             .catch((err) => {
+              SetLoad(false);
               Swal.fire("Error", err.response.data.message, "error");
             });
         }
@@ -114,7 +118,9 @@ const AuthLogin = () => {
         </div>
       </Link>
       <div className="btn-main mx-5 px-3 py-4">
-        <button onClick={handleSubmit}>Login</button>
+        <button onClick={handleSubmit} disabled={load ? true : false}>
+          {load ? <Spinner /> : "Login"}
+        </button>
       </div>
       <div className="divider-area d-flex mx-5 px-1 py-3">
         <hr />
