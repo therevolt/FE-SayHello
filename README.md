@@ -5,7 +5,7 @@
 <h3 align="center">ZWallet Apps</h3>
 <div align="center">
   
-[![Status](https://img.shields.io/website?down_color=red&down_message=Offline&up_color=green&up_message=Online&url=https%3A%2F%2Fsayhello.xyz)](#)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6f80fbfc-260f-4a04-a6d7-8173ba743ee5/deploy-status)](https://app.netlify.com/sites/lucid-raman-8407a5/deploys)
 
 </div>
 
