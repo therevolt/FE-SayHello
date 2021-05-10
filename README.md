@@ -5,7 +5,7 @@
 <h3 align="center">ZWallet Apps</h3>
 <div align="center">
   
-[![Netlify Status](https://api.netlify.com/api/v1/badges/6f80fbfc-260f-4a04-a6d7-8173ba743ee5/deploy-status)](https://app.netlify.com/sites/lucid-raman-8407a5/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6f80fbfc-260f-4a04-a6d7-8173ba743ee5/deploy-status)](https://app.netlify.com/sites/shello/deploys)
 
 </div>
 
