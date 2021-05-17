@@ -35,7 +35,7 @@ cd FE-SayHello
 Coming Soon
 
 ## 💻 Live Demo <a name = "live_demo"></a>
-Coming Soon
+Netlify : https://shello.netlify.app
 
 ## Backend
 #### Repo Backend : https://github.com/therevolt/BE-SayHello
