@@ -25,6 +25,10 @@ button:disabled {
   background: #e5e5e5 !important;
 }
 
+li.chat-sender.d-flex.justify-content-end.text-end.mt-2.mx-2.position-relative {
+  margin-left: auto !important;
+}
+
 .side-panel::-webkit-scrollbar,
 .body-chat::-webkit-scrollbar,
 .side-panel-mobile::-webkit-scrollbar {
@@ -53,7 +57,7 @@ button:disabled {
 
 .footer-chat {
   background: white;
-  width: 100vw;
+  width: 100%;
 }
 
 .wrapper-search > .input,
@@ -62,6 +66,10 @@ button:disabled {
   border-radius: 15px;
   padding: 15px 0px;
   padding-left: 15px;
+}
+
+.footer-chat > .input {
+  width: 85%;
 }
 
 .plus-icon {
@@ -79,7 +87,7 @@ input#message {
 
 input#message {
   align-self: center;
-  width: 65vw;
+  width: 50vw;
 }
 
 .sub-title {
@@ -520,8 +528,14 @@ input#password {
   opacity: 1;
 }
 
+.col,
+.col-3 {
+  padding: 0px !important;
+}
+
 @media screen and (max-width: 800px) {
-  .side-panel-mobile {
+  .side-panel-mobile,
+  .col-3 {
     position: absolute;
     background: white;
     height: 100vh;
@@ -534,7 +548,7 @@ input#password {
     margin-left: 10px;
     margin-right: 10px;
   }
-  .col-9.position-relative {
+  .col.position-relative {
     width: 100%;
     height: 100vh;
     padding: 0px !important;
@@ -552,8 +566,12 @@ input#password {
   .back-btn {
     display: block;
   }
-  .ReactModal__Overlay.ReactModal__Overlay--after-open {
+  body > div:nth-child(8) > div {
     z-index: 2 !important;
-    left: 110px !important;
+    left: 265px !important;
+  }
+  body > div:nth-child(7) > div {
+    z-index: 2 !important;
+    left: 155px !important;
   }
 }

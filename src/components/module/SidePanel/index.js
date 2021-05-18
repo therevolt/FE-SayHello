@@ -29,7 +29,7 @@ const SidePanel = ({ fireEvent }) => {
   return (
     <div
       className={responsivePage ? "col-3 side-panel-mobile" : "col-3 side-panel"}
-      style={responsivePage ? { display: fireEvent ? "block" : "none" } : {}}
+      style={responsivePage ? { display: fireEvent ? "block" : "none" } : { marginLeft: "15px" }}
     >
       {/* Home */}
       {selectedMenu === "home" && <Home fireEvent={setIsOpen} />}

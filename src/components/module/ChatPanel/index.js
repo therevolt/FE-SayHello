@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
@@ -9,22 +10,12 @@ import "react-toastify/dist/ReactToastify.css";
 import axiosApiInstance from "../../../helper/axiosInstance";
 import Modal from "react-modal";
 
-const customStyles = {
-  content: {
-    top: "25%",
-    left: "90%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
-
-const ChatPanel = ({ fireEvent }) => {
+const ChatPanel = ({ fireEvent, fireEvent2 }) => {
   const [socketState, setSocketState] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [defaultMessages, setDefaultMessages] = useState([]);
+  const responsivePage = useMediaQuery({ query: "(max-width: 800px)" });
   const [sender, setSender] = useState(null);
   const [bottom, setBottom] = useState(false);
   const [target, setTarget] = useState(0);
@@ -37,6 +28,19 @@ const ChatPanel = ({ fireEvent }) => {
   const user = useSelector((state) => state.user.user);
   const bottomRef = useRef();
   const inputRef = useRef();
+
+  const customStyles = {
+    content: {
+      top: "25%",
+      left: responsivePage ? "0" : "87%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: "2",
+      width: "235px",
+    },
+  };
 
   function closeModal() {
     setIsOpen(false);
@@ -105,7 +109,6 @@ const ChatPanel = ({ fireEvent }) => {
 
   const scrollOnTop = async () => {
     if (document.getElementById("chat").scrollTop === 0) {
-      console.log(numberPages);
       if (numberPages.length > 0) {
         const currentPage = numberPages.shift();
         await axiosApiInstance
@@ -132,7 +135,7 @@ const ChatPanel = ({ fireEvent }) => {
 
   useEffect(() => {
     if (socketState) {
-      socketState.on("recMsg", (msg) => {
+      socketState.once("recMsg", (msg) => {
         if (msg.to === user.userId) {
           setMessages([...messages, msg]);
           setDefaultMessages([...messages, msg]);
@@ -189,7 +192,6 @@ const ChatPanel = ({ fireEvent }) => {
             .get(`${process.env.REACT_APP_URL_API}/users/list`)
             .then((result) => {
               dispatch({ type: "SET_LAST_MSG", payload: `${Math.floor(Math.random() * 101)}` });
-              console.log(data);
               if (state.userId === data.userId) {
                 dispatch({
                   type: "SET_CHAT",
@@ -259,7 +261,7 @@ const ChatPanel = ({ fireEvent }) => {
   };
 
   return (
-    <div className="col-9 position-relative" style={{ padding: 0, paddingRight: "13px" }}>
+    <div className="col position-relative" style={{ padding: 0, paddingRight: "13px" }}>
       {state && sender ? (
         state.userId && sender !== state.userId && <ToastContainer />
       ) : (
@@ -278,10 +280,20 @@ const ChatPanel = ({ fireEvent }) => {
               <div className="back-btn me-4 my-3" onClick={() => fireEvent(true)}>
                 <img src="/assets/images/back.svg" alt="" />
               </div>
-              <div className="picture-chat">
+              <div
+                className="picture-chat"
+                onClick={() => {
+                  fireEvent2[1](!fireEvent2[0]);
+                }}
+              >
                 <img src={state.avatar} alt="" height="64" width="64" />
               </div>
-              <div className="name-receiver d-flex flex-column mx-2">
+              <div
+                className="name-receiver d-flex flex-column mx-2"
+                onClick={() => {
+                  fireEvent2[1](!fireEvent2[0]);
+                }}
+              >
                 <div className="name">{state.name}</div>
                 <div className="status my-1">{state.socketId ? "Online" : "Offline"}</div>
               </div>
@@ -310,7 +322,10 @@ const ChatPanel = ({ fireEvent }) => {
           <div
             id="chat"
             className="body-chat"
-            onClick={() => fireEvent(false)}
+            onClick={() => {
+              fireEvent(false);
+              fireEvent2[1](false);
+            }}
             onScroll={scrollOnTop}
           >
             <ul>
@@ -324,7 +339,9 @@ const ChatPanel = ({ fireEvent }) => {
                         key={i}
                       >
                         <img src={state.avatar} alt="" width="54" height="54" />
-                        <div className="mx-2">{item.messageBody}</div>
+                        <div className="mx-2" style={{ maxWidth: "350px" }}>
+                          {item.messageBody}
+                        </div>
                         <div className="time-msg">{item.time}</div>
                       </li>
                     );
@@ -343,7 +360,9 @@ const ChatPanel = ({ fireEvent }) => {
                             <img src="/assets/images/send2.svg" alt="" />
                           )}
                         </div>
-                        <div className="mx-2">{item.messageBody}</div>
+                        <div className="mx-2" style={{ maxWidth: "350px" }}>
+                          {item.messageBody}
+                        </div>
                         <img src={user.avatar} alt="" width="54" height="54" />
                       </li>
                     );
@@ -382,26 +401,26 @@ const ChatPanel = ({ fireEvent }) => {
             contentLabel="Example Modal"
             bodyOpenClassName="modal-react"
           >
-            <div className="menu d-flex mb-3">
+            <div className="menu d-flex mb-4">
               <div className="icon me-3">
                 <img src="/assets/images/Vector.svg" alt="" width="24" height="24" />
               </div>
               <span>Calls</span>
             </div>
-            <div className="menu d-flex mb-3">
+            <div className="menu d-flex my-4">
               <div className="icon me-3">
                 <img src="/assets/images/trash.svg" alt="" width="24" height="24" />
               </div>
               <span>Delete chat history</span>
             </div>
-            <div className="menu d-flex mb-3">
+            <div className="menu d-flex my-4">
               <div className="icon me-3">
                 <img src="/assets/images/Union-white.svg" alt="" width="24" height="24" />
               </div>
               <span>Mute notification</span>
             </div>
             <div
-              className="menu d-flex mb-3"
+              className="menu d-flex mt-4"
               onClick={() => {
                 if (selectedMenu === "search") {
                   setSelectedMenu("none");
