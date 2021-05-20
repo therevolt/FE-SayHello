@@ -1,8 +1,7 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=400px height=300px src="https://i.ibb.co/bBbCyCy/image-2021-05-03-033832.png" alt="logo"></a>
+ <img width=400px src="https://i.ibb.co/k9mXPSQ/Blue-Bold-Connected-Letter-C-Logo.png" alt="logo"></a>
 </p>
-<h3 align="center">ZWallet Apps</h3>
 <div align="center">
   
 [![Netlify Status](https://api.netlify.com/api/v1/badges/6f80fbfc-260f-4a04-a6d7-8173ba743ee5/deploy-status)](https://app.netlify.com/sites/shello/deploys)
@@ -12,7 +11,7 @@
 ---
 
 ## 🧐 About
-Frontend SayHello Apps
+A digital wallet website for various transactions with a variety of features and security that guarantees both transactions between users and marketplace payment transactions, this website was created with NextJS as a framework and Bootstrap for styling.
 
 ## 🔖Build With
 - ReactJS
@@ -28,7 +27,10 @@ git clone https://github.com/therevolt/FE-SayHello
 ```
 cd FE-SayHello
 ```
-- Open Command/Terminal
+- Install Module
+```
+npm install
+```
 - Type ``` npm start``` To Start Website
 
 ## 🔎 Preview Design <a name = "preview"></a>
