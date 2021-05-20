@@ -4,7 +4,7 @@
 </p>
 <div align="center">
   
-[![Netlify Status](https://api.netlify.com/api/v1/badges/6f80fbfc-260f-4a04-a6d7-8173ba743ee5/deploy-status)](https://app.netlify.com/sites/shello/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6f80fbfc-260f-4a04-a6d7-8173ba743ee5/deploy-status)](https://shello.netlify.app)
 
 </div>
 
