@@ -34,7 +34,14 @@ npm install
 - Type ``` npm start``` To Start Website
 
 ## 🔎 Preview Design <a name = "preview"></a>
-Coming Soon
+<p align="center">
+  <span>
+    <img width="400" height="400" src="https://i.ibb.co/9sTyMsH/Say-Hello-Login.png">   
+    <img width="400" height="400" src="https://i.ibb.co/0tTn1Q3/Say-Hello-Chat-Room-2.png">   
+    <img width="400" height="400" src="https://i.ibb.co/YtgNMqH/Say-Hello-Chat-Room-3.png">   
+    <img width="400" height="400" src="https://i.ibb.co/dQr4fcD/Say-Hello-Chat-Room-4.png">
+  </span>
+</p>
 
 ## 💻 Live Demo <a name = "live_demo"></a>
 Netlify : https://shello.netlify.app
