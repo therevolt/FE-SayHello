@@ -11,7 +11,7 @@
 ---
 
 ## 🧐 About
-A digital wallet website for various transactions with a variety of features and security that guarantees both transactions between users and marketplace payment transactions, this website was created with NextJS as a framework and Bootstrap for styling.
+Chat website with various realtime features, such as send/receive messages, notifications, and online/offline status. Made with Socket.io for all realtime features as well as ExpressJS as a server and ReactJS on the frontend side.
 
 ## 🔖Build With
 - ReactJS
