@@ -534,6 +534,20 @@ input#password {
 }
 
 @media screen and (max-width: 800px) {
+  .card-auth {
+    width: 90%;
+  }
+  .card-auth input,
+  .card-auth button,
+  .card-auth .btn-main-2 {
+    width: 60vw !important;
+  }
+  .forgot-access span {
+    right: 15vw;
+  }
+  .icon-eye {
+    left: 55vw;
+  }
   .side-panel-mobile,
   .col-3 {
     position: absolute;
